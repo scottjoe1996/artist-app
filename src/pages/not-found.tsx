@@ -1,10 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router";
 
+import Title from "../components/title";
+
 const NotFound: React.FC = () => {
   return (
     <>
-      <h1>Page not found</h1>
+      <Title>Page not found</Title>
       <NavLink to="/">Go to home page</NavLink>
     </>
   );

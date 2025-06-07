@@ -1,10 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router";
 
+import Title from "../components/title";
+
 const Home: React.FC = () => {
   return (
     <>
-      <h1>Home</h1>
+      <Title>Home</Title>
       <section>
         <h2>Getting started</h2>
         <p>
