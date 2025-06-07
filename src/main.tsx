@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { ApiContext } from "./apis/api-context";
 
 import Home from "./pages/home";
-import Selection from "./pages/selection";
+import Selection from "./pages/selection/selection";
 import NotFound from "./pages/not-found";
 import PageContainer from "./pages/page-container";
 import { ArtistApi } from "./apis/artist-api";
