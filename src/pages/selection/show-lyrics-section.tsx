@@ -26,9 +26,14 @@ const ShowLyricsSection: React.FC<ShowLyricsSectionProps> = ({
 
   const handleFilterChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>, lyrics: string) => {
-      const matches = getMatchLocations(lyrics, event.target.value);
-      setFilter(event.target.value);
-      setFilterCount(matches.length);
+      const value = event.target.value;
+      const containsNoneAlphanumericaCharacters = /[^a-zA-Z0-9]/g.test(value);
+
+      if (!containsNoneAlphanumericaCharacters) {
+        const matches = getMatchLocations(lyrics, event.target.value);
+        setFilter(event.target.value);
+        setFilterCount(matches.length);
+      }
     },
     []
   );
@@ -59,13 +64,19 @@ const ShowLyricsSection: React.FC<ShowLyricsSectionProps> = ({
         <div className="w-full flex mb-3 items-center justify-start">
           <input
             id="wordHighlight"
+            aria-describedby="wordHighlightCount"
             className="size-2/5 px-2 py-3 border rounded-md"
             onChange={(event) =>
               handleFilterChange(event, lyricResponse.data.lyrics)
             }
+            value={filter}
             placeholder="Highlight single word"
           />
-          <div className="flex justify-center items-center rounded-full bg-violet-200 mx-2 p-3">
+          <div
+            id="wordHighlightCount"
+            aria-live="polite"
+            className="flex justify-center items-center rounded-full bg-violet-200 mx-2 p-3"
+          >
             <span>{filterCount} found</span>
           </div>
         </div>

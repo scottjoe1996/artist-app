@@ -27,6 +27,31 @@ describe("ShowLyricsSection", () => {
     onChooseAnotherTrack = vi.fn();
   });
 
+  it("should highlight expected number of words", async () => {
+    const { getByText, getByLabelText } = render(
+      <ShowLyricsSection
+        artistId={ARTIST_ID}
+        trackId={MOCK_TRACK_WITH_LYRICS.id}
+        onChooseAnotherTrack={onChooseAnotherTrack}
+      />,
+      artistApi
+    );
+
+    expect(artistApi.getLyrics).toHaveBeenCalledWith(
+      ARTIST_ID,
+      MOCK_TRACK_WITH_LYRICS.id
+    );
+    await waitFor(() => {
+      getByText(`Track: ${MOCK_TRACK_WITH_LYRICS.name}`);
+      getByText(MOCK_TRACK_WITH_LYRICS.lyrics);
+    });
+
+    fireEvent.change(getByLabelText("Highlight word"), {
+      target: { value: "Happy" },
+    });
+    getByText("4 found");
+  });
+
   it("should display track name and lyrics and choose another track when button is clicked", async () => {
     const { getByText } = render(
       <ShowLyricsSection
