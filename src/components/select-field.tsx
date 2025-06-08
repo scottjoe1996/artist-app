@@ -12,6 +12,7 @@ interface SelectFieldProps {
   placeholder: string;
   options: Option[];
   onChange: (value: string) => void;
+  className?: string;
 }
 
 const PLACE_HOLDER_VALUE = "";
@@ -22,6 +23,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
   placeholder,
   options,
   onChange,
+  className,
 }) => {
   const handleOnChange = React.useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -31,12 +33,13 @@ const SelectField: React.FC<SelectFieldProps> = ({
   );
 
   return (
-    <>
+    <div className={className}>
       <label htmlFor={id} className="font-semibold">
         {label}
       </label>
       <div className="border rounded-md mt-1">
         <select
+          required
           name={id}
           id={id}
           className="w-full px-2 py-3 border-r-12 border-r-transparent rounded-md"
@@ -53,7 +56,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
           ))}
         </select>
       </div>
-    </>
+    </div>
   );
 };
 
