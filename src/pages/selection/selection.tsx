@@ -28,6 +28,10 @@ const PageContent: React.FC = () => {
     );
   }
 
+  if (artistsResponse.data.length === 0) {
+    return <p>No artists available</p>;
+  }
+
   return (
     <section>
       <h2>Get track lyrics</h2>

@@ -33,6 +33,17 @@ describe("Selection", () => {
     await waitFor(() => getByText("Choose an artist"));
   });
 
+  it("should display no artists message if none exist", async () => {
+    artistApi.getAllArtists.mockResolvedValue({
+      isError: false,
+      data: [],
+    });
+    const { getByText } = render(<Selection />, artistApi);
+
+    expect(artistApi.getAllArtists).toHaveBeenCalled();
+    await waitFor(() => getByText("No artists available"));
+  });
+
   it("should display error message on error retrieving artists", async () => {
     artistApi.getAllArtists.mockResolvedValue({
       isError: true,

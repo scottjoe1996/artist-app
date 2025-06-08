@@ -27,7 +27,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
     (event: React.ChangeEvent<HTMLSelectElement>) => {
       onChange(event.target.value);
     },
-    []
+    [onChange]
   );
 
   return (
