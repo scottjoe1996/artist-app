@@ -5,6 +5,7 @@ import { ApiContext } from "../../apis/api-context";
 import LoadingSpinner from "../../components/loading-spinner";
 import type { ApiResponse, Artist } from "../../apis/artist-api";
 import ErrorMessage from "../../components/error-message";
+import SelectLyricsForm from "./select-lyrics-form";
 
 const PageContent: React.FC = () => {
   const { artistApi } = React.useContext(ApiContext);
@@ -27,7 +28,16 @@ const PageContent: React.FC = () => {
     );
   }
 
-  return <span>TODO</span>;
+  return (
+    <section>
+      <h2>Get track lyrics</h2>
+      <p className="mb-5">
+        Choose and artist and one of their track's and click submit to see the
+        track's lyrics
+      </p>
+      <SelectLyricsForm artists={artistsResponse.data} />
+    </section>
+  );
 };
 
 const Selection: React.FC = () => {

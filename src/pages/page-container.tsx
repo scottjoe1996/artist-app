@@ -11,7 +11,7 @@ const PageContainer: React.FC = () => {
   }, [location]);
 
   return (
-    <main className="mx-auto w-full max-w-4xl p-4">
+    <main className="mx-auto w-full max-w-2xl p-4">
       <Outlet />
     </main>
   );

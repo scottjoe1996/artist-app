@@ -30,7 +30,7 @@ describe("Selection", () => {
 
     getByText("Selection");
     expect(artistApi.getAllArtists).toHaveBeenCalled();
-    await waitFor(() => getByText("TODO"));
+    await waitFor(() => getByText("Choose an artist"));
   });
 
   it("should display error message on error retrieving artists", async () => {
