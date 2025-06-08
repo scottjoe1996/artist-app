@@ -1,11 +1,11 @@
 import { mock, type MockProxy } from "vitest-mock-extended";
 import { waitFor, fireEvent } from "@testing-library/react";
+import { vi, type Mock } from "vitest";
 
 import { ArtistApi, type Artist, type Track } from "../../apis/artist-api";
 import { render } from "../../utils/render-wrapper";
 
 import SelectLyricsSection from "./select-lyrics-section";
-import { vi, type Mock } from "vitest";
 
 const MOCK_ARTISTS: Artist[] = [
   { id: 1, name: "Sabrina Carpenter" },

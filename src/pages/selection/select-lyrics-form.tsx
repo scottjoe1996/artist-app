@@ -52,7 +52,7 @@ const SelectLyricsForm: React.FC<SelectLyricsFormProps> = ({
             type="button"
             disabled={submitDisabled}
             onClick={() => onSubmit(fields.artistId!, fields.trackId!)}
-            className="bg-violet-700 hover:bg-violet-900 text-white font-bold py-2 px-4 rounded-md disabled:bg-violet-300 w-full mt-4 enabled:cursor-pointer"
+            className="primary-button mt-4"
           >
             Get lyrics
           </button>

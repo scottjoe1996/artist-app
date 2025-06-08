@@ -8,11 +8,13 @@ import ErrorMessage from "../../components/error-message";
 interface ShowLyricsSectionProps {
   artistId: number;
   trackId: number;
+  onChooseAnotherTrack: () => void;
 }
 
 const ShowLyricsSection: React.FC<ShowLyricsSectionProps> = ({
   artistId,
   trackId,
+  onChooseAnotherTrack,
 }) => {
   const { artistApi } = React.useContext(ApiContext);
   const [lyricResponse, setLyricResponse] =
@@ -38,6 +40,13 @@ const ShowLyricsSection: React.FC<ShowLyricsSectionProps> = ({
     <section>
       <h2>Track: {lyricResponse.data.name}</h2>
       <p>{lyricResponse.data.lyrics}</p>
+      <button
+        type="button"
+        onClick={onChooseAnotherTrack}
+        className="primary-button mt-6"
+      >
+        Choose another track
+      </button>
     </section>
   );
 };

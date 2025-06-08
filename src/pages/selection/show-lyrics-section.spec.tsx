@@ -1,5 +1,6 @@
 import { mock, type MockProxy } from "vitest-mock-extended";
-import { waitFor } from "@testing-library/react";
+import { fireEvent, waitFor } from "@testing-library/react";
+import { vi, type Mock } from "vitest";
 
 import { ArtistApi, type TrackWihLyrics } from "../../apis/artist-api";
 import { render } from "../../utils/render-wrapper";
@@ -15,6 +16,7 @@ const MOCK_TRACK_WITH_LYRICS: TrackWihLyrics = {
 };
 describe("ShowLyricsSection", () => {
   let artistApi: MockProxy<ArtistApi>;
+  let onChooseAnotherTrack: Mock;
 
   beforeEach(() => {
     artistApi = mock<ArtistApi>();
@@ -22,13 +24,15 @@ describe("ShowLyricsSection", () => {
       isError: false,
       data: MOCK_TRACK_WITH_LYRICS,
     });
+    onChooseAnotherTrack = vi.fn();
   });
 
-  it("should display track name and lyrics", async () => {
+  it("should display track name and lyrics and choose another track when button is clicked", async () => {
     const { getByText } = render(
       <ShowLyricsSection
         artistId={ARTIST_ID}
         trackId={MOCK_TRACK_WITH_LYRICS.id}
+        onChooseAnotherTrack={onChooseAnotherTrack}
       />,
       artistApi
     );
@@ -41,6 +45,9 @@ describe("ShowLyricsSection", () => {
       getByText(`Track: ${MOCK_TRACK_WITH_LYRICS.name}`);
       getByText(MOCK_TRACK_WITH_LYRICS.lyrics);
     });
+
+    fireEvent.click(getByText("Choose another track"));
+    expect(onChooseAnotherTrack).toHaveBeenCalled();
   });
 
   it("should display error message on error retrieving lyrics", async () => {
@@ -51,6 +58,7 @@ describe("ShowLyricsSection", () => {
       <ShowLyricsSection
         artistId={ARTIST_ID}
         trackId={MOCK_TRACK_WITH_LYRICS.id}
+        onChooseAnotherTrack={onChooseAnotherTrack}
       />,
       artistApi
     );
