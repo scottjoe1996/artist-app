@@ -1,13 +1,13 @@
 import { mock, type MockProxy } from "vitest-mock-extended";
 import { waitFor, fireEvent } from "@testing-library/react";
 
-import { ArtistApi } from "../../apis/artist-api";
+import { ArtistApi, type Artist, type Track } from "../../apis/artist-api";
 import { render } from "../../utils/render-wrapper";
 
 import SelectLyricsSection from "./select-lyrics-section";
 import { vi, type Mock } from "vitest";
 
-const MOCK_ARTISTS = [
+const MOCK_ARTISTS: Artist[] = [
   { id: 1, name: "Sabrina Carpenter" },
   { id: 2, name: "Bob Dylan" },
   { id: 3, name: "Cassie" },
@@ -15,7 +15,7 @@ const MOCK_ARTISTS = [
   { id: 5, name: "Bon Jovi" },
 ];
 
-const MOCK_TRACKS = [
+const MOCK_TRACKS: Track[] = [
   { id: 6, name: "Mr Blue Sky" },
   { id: 7, name: "Don't Stop Me Now" },
   { id: 8, name: "Wonderwall" },

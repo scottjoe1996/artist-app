@@ -15,7 +15,7 @@ interface SelectFieldProps {
   className?: string;
 }
 
-const PLACE_HOLDER_VALUE = "";
+const PLACE_HOLDER_VALUE = "PLACE_HOLDER";
 
 const SelectField: React.FC<SelectFieldProps> = ({
   id,
@@ -46,7 +46,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
           defaultValue={PLACE_HOLDER_VALUE}
           onChange={handleOnChange}
         >
-          <option value={PLACE_HOLDER_VALUE} disabled>
+          <option value={PLACE_HOLDER_VALUE} hidden disabled>
             {placeholder}
           </option>
           {options.map((option, index) => (

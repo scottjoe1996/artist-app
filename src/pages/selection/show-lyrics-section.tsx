@@ -1,14 +1,43 @@
 import React from "react";
 
+import { ApiContext } from "../../apis/api-context";
+import type { ApiResponse, TrackWihLyrics } from "../../apis/artist-api";
+import LoadingSpinner from "../../components/loading-spinner";
+import ErrorMessage from "../../components/error-message";
+
 interface ShowLyricsSectionProps {
   artistId: number;
   trackId: number;
 }
 
-const ShowLyricsSection: React.FC<ShowLyricsSectionProps> = () => {
+const ShowLyricsSection: React.FC<ShowLyricsSectionProps> = ({
+  artistId,
+  trackId,
+}) => {
+  const { artistApi } = React.useContext(ApiContext);
+  const [lyricResponse, setLyricResponse] =
+    React.useState<ApiResponse<TrackWihLyrics>>();
+
+  React.useEffect(() => {
+    artistApi.getLyrics(artistId, trackId).then((response) => {
+      setLyricResponse(response);
+    });
+  }, [artistApi, artistId, trackId]);
+
+  if (!lyricResponse) {
+    return <LoadingSpinner label="Loading lyrics..." />;
+  }
+
+  if (lyricResponse.isError) {
+    return (
+      <ErrorMessage message="An error occurred getting the lyrics, please refresh the page and try again."></ErrorMessage>
+    );
+  }
+
   return (
     <section>
-      <h2>TODO</h2>
+      <h2>Track: {lyricResponse.data.name}</h2>
+      <p>{lyricResponse.data.lyrics}</p>
     </section>
   );
 };
