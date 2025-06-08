@@ -4,7 +4,8 @@ import { waitFor, fireEvent } from "@testing-library/react";
 import { ArtistApi } from "../../apis/artist-api";
 import { render } from "../../utils/render-wrapper";
 
-import Selection from "./selection";
+import SelectLyricsSection from "./select-lyrics-section";
+import { vi, type Mock } from "vitest";
 
 const MOCK_ARTISTS = [
   { id: 1, name: "Sabrina Carpenter" },
@@ -22,8 +23,9 @@ const MOCK_TRACKS = [
   { id: 10, name: "Take On Me" },
 ];
 
-describe("Selection", () => {
+describe("SelectLyricsSection", () => {
   let artistApi: MockProxy<ArtistApi>;
+  let onSubmit: Mock;
 
   beforeEach(() => {
     artistApi = mock<ArtistApi>();
@@ -35,12 +37,16 @@ describe("Selection", () => {
       isError: false,
       data: MOCK_TRACKS,
     });
+    onSubmit = vi.fn();
+    onSubmit.mockReturnValue(undefined);
   });
 
-  it("should be able to select artist and track", async () => {
-    const { getByText, getByLabelText } = render(<Selection />, artistApi);
+  it("should submit lyric selection on submit", async () => {
+    const { getByText, getByLabelText } = render(
+      <SelectLyricsSection onSubmitLyricSelection={onSubmit} />,
+      artistApi
+    );
 
-    getByText("Selection");
     expect(artistApi.getAllArtists).toHaveBeenCalled();
     await waitFor(() => getByText("Choose an artist"));
 
@@ -55,6 +61,12 @@ describe("Selection", () => {
       target: { value: MOCK_TRACKS[1].id },
     });
     getByText(MOCK_TRACKS[1].name);
+
+    fireEvent.click(getByText("Get lyrics"));
+    expect(onSubmit).toHaveBeenCalledWith(
+      MOCK_ARTISTS[1].id,
+      MOCK_TRACKS[1].id
+    );
   });
 
   it("should display no artists message if none exist", async () => {
@@ -62,7 +74,10 @@ describe("Selection", () => {
       isError: false,
       data: [],
     });
-    const { getByText } = render(<Selection />, artistApi);
+    const { getByText } = render(
+      <SelectLyricsSection onSubmitLyricSelection={onSubmit} />,
+      artistApi
+    );
 
     expect(artistApi.getAllArtists).toHaveBeenCalled();
     await waitFor(() => getByText("No artists available"));
@@ -72,7 +87,10 @@ describe("Selection", () => {
     artistApi.getAllArtists.mockResolvedValue({
       isError: true,
     });
-    const { getByText } = render(<Selection />, artistApi);
+    const { getByText } = render(
+      <SelectLyricsSection onSubmitLyricSelection={onSubmit} />,
+      artistApi
+    );
 
     expect(artistApi.getAllArtists).toHaveBeenCalled();
     await waitFor(() =>
@@ -86,9 +104,11 @@ describe("Selection", () => {
     artistApi.getTracks.mockResolvedValue({
       isError: true,
     });
-    const { getByText, getByLabelText } = render(<Selection />, artistApi);
+    const { getByText, getByLabelText } = render(
+      <SelectLyricsSection onSubmitLyricSelection={onSubmit} />,
+      artistApi
+    );
 
-    getByText("Selection");
     expect(artistApi.getAllArtists).toHaveBeenCalled();
     await waitFor(() => getByText("Choose an artist"));
 
@@ -110,9 +130,11 @@ describe("Selection", () => {
       isError: false,
       data: [],
     });
-    const { getByText, getByLabelText } = render(<Selection />, artistApi);
+    const { getByText, getByLabelText } = render(
+      <SelectLyricsSection onSubmitLyricSelection={onSubmit} />,
+      artistApi
+    );
 
-    getByText("Selection");
     expect(artistApi.getAllArtists).toHaveBeenCalled();
     await waitFor(() => getByText("Choose an artist"));
 
