@@ -69,6 +69,27 @@ describe("SelectLyricsSection", () => {
     );
   });
 
+  it("should not be able to submit lyric selection if track has not been selected", async () => {
+    const { getByText, getByLabelText } = render(
+      <SelectLyricsSection onSubmitLyricSelection={onSubmit} />,
+      artistApi
+    );
+
+    expect(artistApi.getAllArtists).toHaveBeenCalled();
+    await waitFor(() => getByText("Choose an artist"));
+
+    fireEvent.change(getByLabelText("Artist"), {
+      target: { value: MOCK_ARTISTS[1].id },
+    });
+    getByText(MOCK_ARTISTS[1].name);
+    expect(artistApi.getTracks).toHaveBeenCalledWith(MOCK_ARTISTS[1].id);
+
+    await waitFor(() => getByText("Choose a track"));
+
+    fireEvent.click(getByText("Get lyrics"));
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
+
   it("should display no artists message if none exist", async () => {
     artistApi.getAllArtists.mockResolvedValue({
       isError: false,
