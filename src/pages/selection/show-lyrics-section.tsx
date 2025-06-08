@@ -4,6 +4,8 @@ import { ApiContext } from "../../apis/api-context";
 import type { ApiResponse, TrackWihLyrics } from "../../apis/artist-api";
 import LoadingSpinner from "../../components/loading-spinner";
 import ErrorMessage from "../../components/error-message";
+import HighLight from "../../components/highlight";
+import { getMatchLocations } from "../../utils/word-matcher";
 
 interface ShowLyricsSectionProps {
   artistId: number;
@@ -19,6 +21,17 @@ const ShowLyricsSection: React.FC<ShowLyricsSectionProps> = ({
   const { artistApi } = React.useContext(ApiContext);
   const [lyricResponse, setLyricResponse] =
     React.useState<ApiResponse<TrackWihLyrics>>();
+  const [filter, setFilter] = React.useState("");
+  const [filterCount, setFilterCount] = React.useState<number>(0);
+
+  const handleFilterChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, lyrics: string) => {
+      const matches = getMatchLocations(lyrics, event.target.value);
+      setFilter(event.target.value);
+      setFilterCount(matches.length);
+    },
+    []
+  );
 
   React.useEffect(() => {
     artistApi.getLyrics(artistId, trackId).then((response) => {
@@ -39,7 +52,29 @@ const ShowLyricsSection: React.FC<ShowLyricsSectionProps> = ({
   return (
     <section>
       <h2>Track: {lyricResponse.data.name}</h2>
-      <p>{lyricResponse.data.lyrics}</p>
+      <div className="w-full">
+        <label htmlFor={"wordHighlight"} className="font-semibold">
+          Highlight word
+        </label>
+        <div className="w-full flex mb-3 items-center justify-start">
+          <input
+            id="wordHighlight"
+            className="size-2/5 px-2 py-3 border rounded-md"
+            onChange={(event) =>
+              handleFilterChange(event, lyricResponse.data.lyrics)
+            }
+            placeholder="Highlight single word"
+          />
+          <div className="flex justify-center items-center rounded-full bg-violet-200 mx-2 p-3">
+            <span>{filterCount} found</span>
+          </div>
+        </div>
+      </div>
+
+      <HighLight
+        searchWord={filter}
+        textToHighlight={lyricResponse.data.lyrics}
+      />
       <button
         type="button"
         onClick={onChooseAnotherTrack}

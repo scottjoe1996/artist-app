@@ -8,8 +8,12 @@ export const getMatchLocations = (
   wordToMatch: string
 ): MatchLocation[] => {
   const matchLocations: MatchLocation[] = [];
-  const boundary = "\\b"; // Word boundary regex (i.e. "word " or "word.")
 
+  if (wordToMatch === "") {
+    return matchLocations;
+  }
+
+  const boundary = "\\b"; // Word boundary regex (i.e. "word " or "word.")
   const specialCharsRegex = /[.*+?^${}()|[\]\\]/;
   const hasSpecialCharacters = specialCharsRegex.test(wordToMatch);
 
@@ -25,7 +29,7 @@ export const getMatchLocations = (
   Array.from(matches).forEach((match) =>
     matchLocations.push({
       start: match.index,
-      end: match.index + match[0].length - 1,
+      end: match.index + match[0].length,
     })
   );
 

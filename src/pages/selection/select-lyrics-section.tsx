@@ -41,7 +41,7 @@ const SelectLyricsSection: React.FC<SelectLyricsSectionProps> = ({
     <section>
       <h2>Get track lyrics</h2>
       <p className="mb-5">
-        Choose an artist and one of their track's to see the track's lyrics
+        Choose an artist and one of their tracks to see the track's lyrics
       </p>
       <SelectLyricsForm
         artists={artistsResponse.data}

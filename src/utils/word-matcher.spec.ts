@@ -7,10 +7,10 @@ describe("getMatchLocations", () => {
       text: "word Word wOrd WORD",
       word: "word",
       expected: [
-        { start: 0, end: 3 },
-        { start: 5, end: 8 },
-        { start: 10, end: 13 },
-        { start: 15, end: 18 },
+        { start: 0, end: 4 },
+        { start: 5, end: 9 },
+        { start: 10, end: 14 },
+        { start: 15, end: 19 },
       ],
     },
     {
@@ -24,9 +24,9 @@ describe("getMatchLocations", () => {
       text: '...word, (word)? "word"!',
       word: "word",
       expected: [
-        { start: 3, end: 6 },
-        { start: 10, end: 13 },
-        { start: 18, end: 21 },
+        { start: 3, end: 7 },
+        { start: 10, end: 14 },
+        { start: 18, end: 22 },
       ],
     },
     {
@@ -40,11 +40,17 @@ describe("getMatchLocations", () => {
       text: "word word word word",
       word: "word",
       expected: [
-        { start: 0, end: 3 },
-        { start: 5, end: 8 },
-        { start: 10, end: 13 },
-        { start: 15, end: 18 },
+        { start: 0, end: 4 },
+        { start: 5, end: 9 },
+        { start: 10, end: 14 },
+        { start: 15, end: 19 },
       ],
+    },
+    {
+      description: "returns empty array for an empty string",
+      text: "nothing to see here",
+      word: "",
+      expected: [],
     },
   ])("$description", ({ text, word, expected }) => {
     const result = getMatchLocations(text, word);
